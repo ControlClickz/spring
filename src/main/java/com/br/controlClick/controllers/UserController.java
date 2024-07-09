@@ -1,9 +1,9 @@
 package com.br.controlClick.controllers;
 
 import com.br.controlClick.domain.dto.UserDto;
-import com.br.controlClick.domain.entities.User;
+import com.br.controlClick.exceptions.AlreadyExistsException;
+import com.br.controlClick.exceptions.NotFoundException;
 import com.br.controlClick.services.IUserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class UserController {
     ) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(userDto));
-        } catch (Exception e) {
+        } catch (AlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
@@ -42,7 +42,7 @@ public class UserController {
     ) {
         try {
             return ResponseEntity.ok(service.listUser(id));
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

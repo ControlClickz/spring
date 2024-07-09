@@ -9,9 +9,9 @@ public interface IUserService {
 
     List<UserDto> listUsers();
 
-    UserDto listUser(Long id) throws Exception;
+    UserDto listUser(Long id);
 
-    UserDto updateUser(Long id, UserDto userDto) throws Exception;
+    UserDto updateUser(Long id, UserDto userDto);
 
     void deleteUser(Long id);
 }
