@@ -1,6 +1,7 @@
 package com.br.controlClick.services;
 
 import com.br.controlClick.domain.dto.UserDto;
+import com.br.controlClick.domain.entities.Game;
 import com.br.controlClick.domain.entities.Role;
 import com.br.controlClick.domain.entities.User;
 import com.br.controlClick.domain.mappers.UserMapper;
@@ -59,7 +60,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto listUser(Long id) {
+    public UserDto getUser(Long id) {
         return UserMapper.toDto(searchUserById(id));
     }
 
@@ -95,12 +96,37 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         User user = searchUserById(id);
         repository.deleteById(id);
     }
 
-    private User searchUserById(Long id) throws NotFoundException {
+    @Override
+    public void followUser(Long followerId, Long followedId) {
+        User follower = repository.findById(followerId)
+                .orElseThrow(() -> new NotFoundException("Usuário seguidor não encontrado"));
+
+        User followed = repository.findById(followedId)
+                .orElseThrow(() -> new NotFoundException("Usuário a ser seguido não encontrado"));
+
+        follower.followUser(followed);
+        repository.save(follower);
+    }
+
+    @Override
+    public void unfollowUser(Long followerId, Long followedId) {
+        User follower = repository.findById(followerId)
+                .orElseThrow(() -> new NotFoundException("Usuário seguidor não encontrado"));
+
+        User followed = repository.findById(followedId)
+                .orElseThrow(() -> new NotFoundException("Usuário a ser deixado de seguir não encontrado"));
+
+        follower.unfollowUser(followed);
+        repository.save(follower);
+    }
+
+    public User searchUserById(Long id) throws NotFoundException {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 

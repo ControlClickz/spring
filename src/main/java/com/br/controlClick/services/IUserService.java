@@ -9,9 +9,13 @@ public interface IUserService {
 
     List<UserDto> listUsers();
 
-    UserDto listUser(Long id);
+    UserDto getUser(Long id);
 
     UserDto updateUser(Long id, UserDto userDto);
 
     void deleteUser(Long id);
+
+    void followUser(Long followerId, Long followedId);
+
+    void unfollowUser(Long followerId, Long followedId);
 }

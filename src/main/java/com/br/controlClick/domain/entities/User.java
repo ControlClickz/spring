@@ -46,19 +46,41 @@ public class User {
     @Column(name = "DT_NASCIMENTO")
     private LocalDate dataNascimento;
 
-//    @ManyToMany
-//    private Set<Game> games = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private Set<Review> reviews = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "follower")
-//    private Set<Follow> followers = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "followed")
-//    private Set<Follow> following = new HashSet<>();
-//
+    @ManyToMany
+    private Set<Game> games = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Review> reviews = new HashSet<>();
+
+    @OneToMany(mappedBy = "follower")
+    private Set<Follow> followers = new HashSet<>();
+
+    @OneToMany(mappedBy = "followed")
+    private Set<Follow> following = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "ID_ROLE")
     private Role role;
+
+    public void addFavoriteGame(Game game) {
+        this.games.add(game);
+        game.getUsers().add(this);
+    }
+
+    public void removeFavoriteGame(Game game) {
+        this.games.remove(game);
+        game.getUsers().remove(this);
+    }
+
+    public void followUser(User userToFollow) {
+        Follow follow = new Follow(this, userToFollow);
+        this.following.add(follow);
+        userToFollow.getFollowers().add(follow);
+    }
+
+    public void unfollowUser(User userToUnfollow) {
+        Follow follow = new Follow(this, userToUnfollow);
+        this.following.remove(follow);
+        userToUnfollow.getFollowers().remove(follow);
+    }
 }

@@ -47,7 +47,8 @@ public class Game {
     @ManyToMany
     @JoinTable(name = "TB_FAVORITE",
             joinColumns = @JoinColumn(name = "ID_GAME"),
-            inverseJoinColumns = @JoinColumn(name = "ID_USER"))
+            inverseJoinColumns = @JoinColumn(name = "ID_USER"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"ID_GAME", "ID_USER"}))
     private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "game")

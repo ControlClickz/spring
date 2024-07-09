@@ -1,9 +1,9 @@
 package com.br.controlClick.controllers;
 
-import com.br.controlClick.domain.dto.UserDto;
+import com.br.controlClick.domain.dto.GameDto;
 import com.br.controlClick.exceptions.AlreadyExistsException;
 import com.br.controlClick.exceptions.NotFoundException;
-import com.br.controlClick.services.IUserService;
+import com.br.controlClick.services.IGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,60 +11,62 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-    private final IUserService service;
+@RequestMapping("/games")
+public class GameController {
+    private final IGameService service;
 
     @Autowired
-    public UserController(IUserService service) {
+    public GameController(IGameService service) {
         this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(
-            @Validated @RequestBody UserDto userDto
-    ) {
+    public ResponseEntity<?> createGame(
+            @Validated  @RequestBody GameDto dto
+            ) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(userDto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.createGame(dto));
         } catch (AlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> listUsers() {
-        return ResponseEntity.ok(service.listUsers());
+    public ResponseEntity<?> listGames() {
+       return ResponseEntity.ok().body(service.listGames());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(
+    public ResponseEntity<?> getGame(
             @PathVariable("id") Long id
     ) {
         try {
-            return ResponseEntity.ok(service.getUser(id));
+            return ResponseEntity.ok().body(service.getGame(id));
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(
+    public ResponseEntity<?> updateGame(
             @PathVariable("id") Long id,
-            @RequestBody UserDto userDto
+            @RequestBody GameDto dto
     ) {
         try {
-            return ResponseEntity.ok(service.updateUser(id, userDto));
-        } catch (Exception e) {
+            return ResponseEntity.ok().body(service.updateGame(id, dto));
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(
+    public ResponseEntity<String> deleteGame(
             @PathVariable("id") Long id
     ) {
         try {
-            service.deleteUser(id);
+            service.deleteGame(id);
             return ResponseEntity.noContent().build();
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

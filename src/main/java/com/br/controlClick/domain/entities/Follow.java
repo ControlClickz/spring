@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "TB_FOLLOW", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"ID_USER", "ID_SEGUIDO"})
+})
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +26,9 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "ID_SEGUIDO")
     private User followed;
+
+    public Follow(User follower, User followed) {
+        this.follower = follower;
+        this.followed = followed;
+    }
 }

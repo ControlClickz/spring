@@ -13,6 +13,9 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "TB_REVIEW", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"ID_USER", "ID_JOGO", "TX_COMENTARIO", "VL_NOTA"})
+})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +34,16 @@ public class Review {
 
     @Column(name = "VL_NOTA")
     private Double nota;
+
+    public void addUser(User user) {
+        this.user = user;
+        user.getReviews().add(this);
+    }
+
+    public void addGame(Game game) {
+        this.game = game;
+        game.getReviews().add(this);
+    }
 
     @Override
     public boolean equals(Object o) {
