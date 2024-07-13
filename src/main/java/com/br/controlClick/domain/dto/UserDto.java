@@ -46,6 +46,8 @@ public class UserDto {
     @NotNull
     private LocalDate dataNascimento;
 
+    private String bio;
+
     @JsonProperty
     public String getSenha() {
         return senha;

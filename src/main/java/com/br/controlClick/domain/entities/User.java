@@ -46,6 +46,9 @@ public class User {
     @Column(name = "DT_NASCIMENTO")
     private LocalDate dataNascimento;
 
+    @Column(name = "TX_BIOGRAFIA")
+    private String bio;
+
     @ManyToMany
     private Set<Game> games = new HashSet<>();
 

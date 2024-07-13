@@ -57,8 +57,13 @@ public class ReviewService implements IReviewService {
     @Transactional
     public ReviewDto updateReview(Long id, ReviewDto dto) {
         Review review = searchReviewById(id);
-        review.setNota(dto.getNota());
-        review.setComentario(dto.getComentario());
+
+        if(dto.getNota() != null) {
+            review.setNota(dto.getNota());
+        }
+        if(dto.getComentario() != null) {
+            review.setComentario(dto.getComentario());
+        }
 
         repository.save(review);
 

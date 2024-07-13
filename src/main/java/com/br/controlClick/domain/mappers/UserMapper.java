@@ -18,6 +18,7 @@ public class UserMapper {
                 .email(dto.getEmail())
                 .senha(dto.getSenha())
                 .dataNascimento(dto.getDataNascimento())
+                .bio(dto.getBio())
                 .build();
     }
 
@@ -35,6 +36,7 @@ public class UserMapper {
                 .email(entity.getEmail())
                 .senha(entity.getSenha())
                 .dataNascimento(entity.getDataNascimento())
+                .bio(entity.getBio())
                 .build();
     }
 }

@@ -48,6 +48,7 @@ public class UserService implements IUserService {
         user.setRole(userRole);
         user.setImgPerfil(null);
         user.setImgBanner(null);
+        user.setBio(null);
 
         repository.save(user);
 
@@ -78,17 +79,30 @@ public class UserService implements IUserService {
             throw new AlreadyExistsException("Nome de usuário já cadastrado!");
         }
 
-        user.setNomeCompleto(userDto.getNomeCompleto());
-        user.setNomeUsuario(userDto.getNomeUsuario());
-
+        if (userDto.getNomeCompleto() != null) {
+            user.setNomeCompleto(userDto.getNomeCompleto());
+        }
+        if(userDto.getNomeUsuario() != null) {
+            user.setNomeUsuario(userDto.getNomeUsuario());
+        }
         if (userDto.getSenha() != null) {
             user.setSenha(userDto.getSenha());
         }
-
-        user.setImgPerfil(userDto.getImgPerfil());
-        user.setImgBanner(userDto.getImgBanner());
-        user.setEmail(userDto.getEmail());
-        user.setDataNascimento(userDto.getDataNascimento());
+        if (userDto.getImgPerfil() != null) {
+            user.setImgPerfil(userDto.getImgPerfil());
+        }
+        if (userDto.getImgBanner() != null) {
+            user.setImgBanner(userDto.getImgBanner());
+        }
+        if (userDto.getEmail() != null) {
+            user.setEmail(userDto.getEmail());
+        }
+        if (userDto.getDataNascimento() != null) {
+            user.setDataNascimento(userDto.getDataNascimento());
+        }
+        if (userDto.getBio() != null) {
+            user.setBio(userDto.getBio());
+        }
 
         repository.save(user);
 
