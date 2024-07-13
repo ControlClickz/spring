@@ -1,9 +1,11 @@
 package com.br.controlClick.services;
 
+import com.br.controlClick.domain.dto.GameDto;
 import com.br.controlClick.domain.dto.UserDto;
 import com.br.controlClick.domain.entities.Game;
 import com.br.controlClick.domain.entities.Role;
 import com.br.controlClick.domain.entities.User;
+import com.br.controlClick.domain.mappers.GameMapper;
 import com.br.controlClick.domain.mappers.UserMapper;
 import com.br.controlClick.exceptions.AlreadyExistsException;
 import com.br.controlClick.exceptions.NotFoundException;
@@ -16,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +58,8 @@ public class UserService implements IUserService {
         user.setImgPerfil(null);
         user.setImgBanner(null);
         user.setBio(null);
+        user.setFollows(0L);
+        user.setFollowers(0L);
 
         repository.save(user);
 
@@ -124,30 +127,6 @@ public class UserService implements IUserService {
         repository.deleteById(id);
     }
 
-    @Override
-    public void followUser(Long followerId, Long followedId) {
-        User follower = repository.findById(followerId)
-                .orElseThrow(() -> new NotFoundException("Usuário seguidor não encontrado"));
-
-        User followed = repository.findById(followedId)
-                .orElseThrow(() -> new NotFoundException("Usuário a ser seguido não encontrado"));
-
-        follower.followUser(followed);
-        repository.save(follower);
-    }
-
-    @Override
-    public void unfollowUser(Long followerId, Long followedId) {
-        User follower = repository.findById(followerId)
-                .orElseThrow(() -> new NotFoundException("Usuário seguidor não encontrado"));
-
-        User followed = repository.findById(followedId)
-                .orElseThrow(() -> new NotFoundException("Usuário a ser deixado de seguir não encontrado"));
-
-        follower.unfollowUser(followed);
-        repository.save(follower);
-    }
-
     @Transactional
     public void favoriteGame(Long userId, Long gameId) {
         Game game = gameService.searchGameById(gameId);
@@ -168,6 +147,13 @@ public class UserService implements IUserService {
             user.removeFavoriteGame(game);
             entityManager.merge(user);
         }
+    }
+
+    @Override
+    public List<GameDto> listFavoriteGames(Long id) {
+        User user = searchUserById(id);
+
+        return user.getGames().stream().map(GameMapper::toDto).collect(Collectors.toList());
     }
 
     public User searchUserById(Long id) throws NotFoundException {

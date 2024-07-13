@@ -8,7 +8,7 @@ import java.util.List;
 public interface IFollowService {
     FollowDto createFollow(FollowDto dto);
     List<FollowDto> listFollows();
+    List<FollowDto> listFollows(Long userId);
     FollowDto getFollow(Long id);
-    FollowDto updateFollow(Long id, FollowDto dto);
-    void deleteFollow(Long id);
+    void unfollow(Long id);
 }

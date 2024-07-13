@@ -19,6 +19,8 @@ public class UserMapper {
                 .senha(dto.getSenha())
                 .dataNascimento(dto.getDataNascimento())
                 .bio(dto.getBio())
+                .followers(dto.getFollowers())
+                .follows(dto.getFollows())
                 .build();
     }
 
@@ -37,6 +39,8 @@ public class UserMapper {
                 .senha(entity.getSenha())
                 .dataNascimento(entity.getDataNascimento())
                 .bio(entity.getBio())
+                .followers(entity.getFollowers())
+                .follows(entity.getFollows())
                 .build();
     }
 }

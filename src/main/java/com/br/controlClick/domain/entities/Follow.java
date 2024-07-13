@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "TB_FOLLOW", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"ID_USER", "ID_SEGUIDO"})
+        @UniqueConstraint(columnNames = {"ID_USER", "ID_FOLLOWER"})
 })
 public class Follow {
     @Id
@@ -21,14 +21,14 @@ public class Follow {
 
     @ManyToOne
     @JoinColumn(name = "ID_USER")
-    private User follower;
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "ID_SEGUIDO")
-    private User followed;
+    @JoinColumn(name = "ID_FOLLOWER")
+    private User follower;
 
     public Follow(User follower, User followed) {
-        this.follower = follower;
-        this.followed = followed;
+        this.user = follower;
+        this.follower = followed;
     }
 }

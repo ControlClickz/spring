@@ -59,11 +59,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews = new HashSet<>();
 
-    @OneToMany(mappedBy = "follower")
-    private Set<Follow> followers = new HashSet<>();
+    private Long follows;
 
-    @OneToMany(mappedBy = "followed")
-    private Set<Follow> following = new HashSet<>();
+    private Long followers;
 
     @ManyToOne
     @JoinColumn(name = "ID_ROLE")
@@ -79,17 +77,5 @@ public class User {
         if (this.games.contains(game)) {
             this.games.remove(game);
         }
-    }
-
-    public void followUser(User userToFollow) {
-        Follow follow = new Follow(this, userToFollow);
-        this.following.add(follow);
-        userToFollow.getFollowers().add(follow);
-    }
-
-    public void unfollowUser(User userToUnfollow) {
-        Follow follow = new Follow(this, userToUnfollow);
-        this.following.remove(follow);
-        userToUnfollow.getFollowers().remove(follow);
     }
 }

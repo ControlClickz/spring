@@ -20,9 +20,9 @@ public class FollowDto {
 
     @Positive
     @NotNull
-    private Long followerId;
+    private Long user;
 
     @Positive
     @NotNull
-    private Long followingId;
+    private Long follower;
 }

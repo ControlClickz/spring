@@ -48,6 +48,10 @@ public class UserDto {
 
     private String bio;
 
+    private Long follows;
+
+    private Long followers;
+
     @JsonProperty
     public String getSenha() {
         return senha;
