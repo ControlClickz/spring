@@ -44,11 +44,7 @@ public class Game {
     @Column(name = "VL_MEDIA")
     private double media;
 
-    @ManyToMany
-    @JoinTable(name = "TB_FAVORITE",
-            joinColumns = @JoinColumn(name = "ID_GAME"),
-            inverseJoinColumns = @JoinColumn(name = "ID_USER"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"ID_GAME", "ID_USER"}))
+    @ManyToMany(mappedBy = "games")
     private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "game")

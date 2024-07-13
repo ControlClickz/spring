@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GameService implements IGameService{
     private final IGameRepository repository;
-    private final IUserRepository userRepository;
-
-    private final UserService userService;
 
     @Override
     @Transactional
@@ -76,24 +73,6 @@ public class GameService implements IGameService{
     public void deleteGame(Long id) {
         Game game = searchGameById(id);
         repository.deleteById(id);
-    }
-
-    @Transactional
-    public void favoriteGame(Long userId, Long gameId) {
-        Game game = searchGameById(gameId);
-        User user = userService.searchUserById(userId);
-
-        user.addFavoriteGame(game);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void unfavoriteGame(Long userId, Long gameId) {
-        Game game = searchGameById(gameId);
-        User user = userService.searchUserById(userId);
-
-        user.removeFavoriteGame(game);
-        userRepository.save(user);
     }
 
     public Game searchGameById(Long id) {

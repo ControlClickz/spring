@@ -50,6 +50,10 @@ public class User {
     private String bio;
 
     @ManyToMany
+    @JoinTable(name = "TB_FAVORITE",
+            joinColumns = @JoinColumn(name = "ID_USER"),
+            inverseJoinColumns = @JoinColumn(name = "ID_GAME"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"ID_USER", "ID_GAME"}))
     private Set<Game> games = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
@@ -66,13 +70,16 @@ public class User {
     private Role role;
 
     public void addFavoriteGame(Game game) {
-        this.games.add(game);
-        game.getUsers().add(this);
+        if (!this.games.contains(game)) {
+            this.games.add(game);
+        }
     }
 
     public void removeFavoriteGame(Game game) {
-        this.games.remove(game);
-        game.getUsers().remove(this);
+        if (this.games.contains(game)) {
+            this.games.remove(game);
+//            game.getUsers().remove(this);
+        }
     }
 
     public void followUser(User userToFollow) {

@@ -9,6 +9,8 @@ import com.br.controlClick.exceptions.AlreadyExistsException;
 import com.br.controlClick.exceptions.NotFoundException;
 import com.br.controlClick.repositories.IRoleRepository;
 import com.br.controlClick.repositories.IUserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,11 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
     private final IUserRepository repository;
     private final IRoleRepository roleRepository;
+
+    private final GameService gameService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private Role createRoleIfNotExists(String roleName) {
         Role role = roleRepository.findByNome(roleName);
@@ -138,6 +145,28 @@ public class UserService implements IUserService {
 
         follower.unfollowUser(followed);
         repository.save(follower);
+    }
+
+    @Transactional
+    public void favoriteGame(Long userId, Long gameId) {
+        Game game = gameService.searchGameById(gameId);
+        User user = searchUserById(userId);
+
+        if (!user.getGames().contains(game)) {
+            user.addFavoriteGame(game);
+            repository.save(user);
+        }
+    }
+
+    @Transactional
+    public void unfavoriteGame(Long userId, Long gameId) {
+        Game game = gameService.searchGameById(gameId);
+        User user = searchUserById(userId);
+
+        if (user.getGames().contains(game)) {
+            user.removeFavoriteGame(game);
+            entityManager.merge(user);
+        }
     }
 
     public User searchUserById(Long id) throws NotFoundException {

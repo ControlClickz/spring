@@ -70,4 +70,33 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @PostMapping("/{userId}/favorites/{gameId}")
+    public ResponseEntity<?> favoriteGame(
+            @PathVariable("userId") Long userId,
+            @PathVariable("gameId") Long gameId
+    ) {
+        try {
+            service.favoriteGame(userId, gameId);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{userId}/favorites/{gameId}")
+    public ResponseEntity<?> unfavoriteGame(
+            @PathVariable("userId") Long userId,
+            @PathVariable("gameId") Long gameId) {
+        try {
+            service.unfavoriteGame(userId, gameId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
