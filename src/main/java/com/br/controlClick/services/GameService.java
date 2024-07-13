@@ -30,7 +30,6 @@ public class GameService implements IGameService{
         Game game = GameMapper.toEntity(dto);
         game.setMedia(0);
         game.setReviews(null);
-        game.setUsers(null);
 
         repository.save(game);
 

@@ -44,8 +44,8 @@ public class Game {
     @Column(name = "VL_MEDIA")
     private double media;
 
-    @ManyToMany(mappedBy = "games")
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(mappedBy = "games")
+//    private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "game")
     private Set<Review> reviews = new HashSet<>();

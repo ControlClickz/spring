@@ -78,7 +78,6 @@ public class User {
     public void removeFavoriteGame(Game game) {
         if (this.games.contains(game)) {
             this.games.remove(game);
-//            game.getUsers().remove(this);
         }
     }
 
