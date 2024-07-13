@@ -103,6 +103,19 @@ public class UserController {
         }
     }
 
+    @GetMapping("{id}/follows/followers")
+    public ResponseEntity<?> listFollowers(
+            @PathVariable("id") Long id
+    ) {
+        try {
+            return ResponseEntity.ok().body(followService.listFollowers(id));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/follows/{followId}")
     public ResponseEntity<?> unfollowUser(
             @PathVariable("followId") Long followId

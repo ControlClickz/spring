@@ -9,6 +9,7 @@ public interface IFollowService {
     FollowDto createFollow(FollowDto dto);
     List<FollowDto> listFollows();
     List<FollowDto> listFollows(Long userId);
+    List<FollowDto> listFollowers(Long userId);
     FollowDto getFollow(Long id);
     void unfollow(Long id);
 }

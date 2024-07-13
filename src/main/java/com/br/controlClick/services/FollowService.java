@@ -4,6 +4,7 @@ import com.br.controlClick.domain.dto.FollowDto;
 import com.br.controlClick.domain.entities.Follow;
 import com.br.controlClick.domain.entities.User;
 import com.br.controlClick.domain.mappers.FollowMapper;
+import com.br.controlClick.domain.mappers.UserMapper;
 import com.br.controlClick.exceptions.NotFoundException;
 import com.br.controlClick.repositories.IFollowRepository;
 import com.br.controlClick.repositories.IUserRepository;
@@ -47,6 +48,11 @@ public class FollowService implements IFollowService {
     @Override
     public List<FollowDto> listFollows(Long userId) {
         return repository.findAllByUserId(userId).stream().map(FollowMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FollowDto> listFollowers(Long userId) {
+        return repository.findAllByFollowerId(userId).stream().map(FollowMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
